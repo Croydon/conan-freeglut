@@ -180,5 +180,5 @@ class freeglutConan(ConanFile):
             self.cpp_info.libs.append("freeglut")
 
         #self.cpp_info.libs.extend(tools.collect_libs(self))
-        self.output.info(tools.collect_libs(self))
+        # self.output.info(tools.collect_libs(self))
         self.output.info(self.cpp_info.libs)
