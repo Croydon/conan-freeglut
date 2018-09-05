@@ -146,7 +146,7 @@ class freeglutConan(ConanFile):
             cmake.install()
 
     def package_info(self):
-        self.cpp_info.libs = tools.collect_libs(self)
+        self.cpp_info.libs = []
 
         if self.settings.os == "Windows":
             if self.settings.compiler == "Visual Studio":
