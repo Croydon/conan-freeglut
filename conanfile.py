@@ -89,7 +89,7 @@ class freeglutConan(ConanFile):
                 packages = ['mesa-libGL-devel%s' % arch_suffix]
                 packages.append('mesa-libGLU-devel%s' % arch_suffix)
                 packages.append('glx-utils%s' % arch_suffix)
-                packages.append('libx11-devel%s' % arch_suffix)
+                packages.append('libX11-devel%s' % arch_suffix)
                 packages.append('libXext-devel%s' % arch_suffix)
                 packages.append('libXi-devel%s' % arch_suffix)
 
