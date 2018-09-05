@@ -146,6 +146,8 @@ class freeglutConan(ConanFile):
             cmake.install()
 
     def package_info(self):
+        self.cpp_info.libdirs = ["lib", "lib64"]
+        
         self.cpp_info.libs = []
 
         if self.settings.os == "Windows":
