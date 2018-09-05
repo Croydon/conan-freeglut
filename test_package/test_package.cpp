@@ -1,7 +1,9 @@
 #include "GL/freeglut.h"
 #include <iostream>
+#include <stdarg.h> /* This declares the va_list type */
 
-void error_handler( const char *fmt, va_list ap)
+
+void error_handler(const char *fmt, va_list ap)
 {
     std::cout << "error";
 }
