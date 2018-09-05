@@ -3,7 +3,7 @@
 
 void error_handler( const char *fmt, va_list ap)
 {
-    std::cout << fmt;
+    std::cout << "error";
 }
 
 int main(int argc, char **argv)
