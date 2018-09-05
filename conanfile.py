@@ -161,5 +161,4 @@ class freeglutConan(ConanFile):
                 self.cpp_info.libs.append("GL")
                 self.cpp_info.libs.append("GLU")
 
-        for lib in self.cpp_info.libs:
-            self.output.warn(lib)
+        self.cpp_info.libs.append("freeglut")
