@@ -153,7 +153,8 @@ class freeglutConan(ConanFile):
         if self.settings.os == "Windows":
             if self.settings.compiler == "Visual Studio":
                 if not self.options.shared:
-                    self.cpp_info.libs.append("OpenGL32.lib")
+                    self.cpp_info.libs.append("opengl32.lib")
+                    self.cpp_info.libs.append("GLu32.lib")
             else:
                 self.cpp_info.libs.append("opengl32")
 
@@ -178,6 +179,6 @@ class freeglutConan(ConanFile):
         else:
             self.cpp_info.libs.append("freeglut")
 
-        self.cpp_info.libs.extend(tools.collect_libs(self))
+        #self.cpp_info.libs.extend(tools.collect_libs(self))
         self.output.info(tools.collect_libs(self))
         self.output.info(self.cpp_info.libs)
