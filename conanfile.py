@@ -43,7 +43,7 @@ class freeglutConan(ConanFile):
     def config_options(self):
         if self.settings.os == 'Windows':
             self.options.remove("fPIC")
-            self.options.replace_glut = True
+            self.options.replace_glut = False
         if self.settings.compiler != "Visual Studio":
             self.options.install_pdb = False
 
@@ -154,10 +154,12 @@ class freeglutConan(ConanFile):
                     self.cpp_info.libs.append("OpenGL32.lib")
             else:
                 self.cpp_info.libs.append("opengl32")
-        else:
-            if self.settings.os == "Macos":
-                self.cpp_info.exelinkflags.append("-framework OpenGL")
-            elif not self.options.shared:
+
+        if self.settings.os == "Macos":
+            self.cpp_info.exelinkflags.append("-framework OpenGL")
+
+        if self.settings.os == "Linux":
+            if self.options.shared:
                 self.cpp_info.libs.append("GL")
                 self.cpp_info.libs.append("GLU")
 
