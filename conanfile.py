@@ -147,7 +147,7 @@ class freeglutConan(ConanFile):
 
     def package_info(self):
         self.cpp_info.libdirs = ["lib", "lib64"]
-        
+
         self.cpp_info.libs = []
 
         if self.settings.os == "Windows":
@@ -161,12 +161,20 @@ class freeglutConan(ConanFile):
             self.cpp_info.exelinkflags.append("-framework OpenGL")
 
         if self.settings.os == "Linux":
-            if self.options.shared:
+            if not self.options.shared:
+                self.cpp_info.libs.append("Xxf86vm")
+                self.cpp_info.libs.append("Xext")
+                self.cpp_info.libs.append("X11")
+                self.cpp_info.libs.append("Xrandr")
+                self.cpp_info.libs.append("Xi")
                 self.cpp_info.libs.append("GL")
                 self.cpp_info.libs.append("GLU")
 
         if self.options.replace_glut:
-            self.cpp_info.libs.append("libglut")
+            if self.options.shared:
+                self.cpp_info.libs.append("libglut.so")
+            else:
+                self.cpp_info.libs.append("libglut.a")
         else:
             self.cpp_info.libs.append("freeglut")
 

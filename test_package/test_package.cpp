@@ -12,6 +12,8 @@ int main(int argc, char **argv)
 {
     glutInitErrorFunc(error_handler);
     glutInit(&argc, argv);
+    std::cout << std::endl << "FreeGLUT version:" << std::endl;
     std::cout << glutGet(GLUT_VERSION);
+    std::cout << std::endl;
     return 0;
 }
