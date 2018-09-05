@@ -159,6 +159,7 @@ class freeglutConan(ConanFile):
                 self.cpp_info.exelinkflags.append("-framework OpenGL")
             elif not self.options.shared:
                 self.cpp_info.libs.append("GL")
+                self.cpp_info.libs.append("GLU")
 
         for lib in self.cpp_info.libs:
             self.output.warn(lib)
