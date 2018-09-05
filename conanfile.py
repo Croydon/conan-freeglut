@@ -160,8 +160,10 @@ class freeglutConan(ConanFile):
             elif not self.options.shared:
                 self.cpp_info.libs.append("GL")
                 self.cpp_info.libs.append("GLU")
-                
+
         if self.options.shared:
             self.cpp_info.libs.append("libglut")
         else:
             self.cpp_info.libs.append("freeglut")
+
+        self.output.info(tools.collect_libs(self))
