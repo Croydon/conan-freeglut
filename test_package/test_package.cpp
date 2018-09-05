@@ -1,9 +1,15 @@
 #include "GL/freeglut.h"
 #include <iostream>
 
+void error_handler( const char *fmt, va_list ap)
+{
+    std::cout << fmt;
+}
+
 int main(int argc, char **argv)
 {
-    glutInit(&argc, argv);
+    glutInitErrorFunc(error_handler)
+    glutInit();
     std::cout << glutGet(GLUT_VERSION);
     return 0;
 }
