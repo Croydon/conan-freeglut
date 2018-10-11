@@ -39,8 +39,8 @@ class freeglutConan(ConanFile):
     build_subfolder = "build_subfolder"
 
     def config_options(self):
-        if self.settings.os == 'Windows':
-            self.options.remove("fPIC")
+        if self.settings.os == "Windows":
+            del self.options.fPIC
             self.options.replace_glut = False
         if self.settings.compiler != "Visual Studio":
             self.options.install_pdb = False
