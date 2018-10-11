@@ -35,8 +35,8 @@ class freeglutConan(ConanFile):
         "replace_glut": True,
         "install_pdb": False
     }
-    _source_subfolder = "_source_subfolder"
-    _build_subfolder = "_build_subfolder"
+    _source_subfolder = "source_subfolder"
+    _build_subfolder = "build_subfolder"
 
     def config_options(self):
         if self.settings.os == "Windows":
