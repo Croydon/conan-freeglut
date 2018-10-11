@@ -20,7 +20,6 @@ class freeglutConan(ConanFile):
     options = {
         "shared": [True, False],
         "fPIC": [True, False],
-        "demos": [True, False],
         "gles": [True, False],
         "print_errors_at_runtime": [True, False],
         "print_warnings_at_runtime": [True, False],
@@ -30,7 +29,6 @@ class freeglutConan(ConanFile):
     default_options = (
         "shared=False",
         "fPIC=True",
-        "demos=False",
         "gles=False",
         "print_errors_at_runtime=True",
         "print_warnings_at_runtime=True",
@@ -119,7 +117,7 @@ class freeglutConan(ConanFile):
                 cmake.definitions['CMAKE_C_FLAGS'] = '-m64'
                 cmake.definitions['CMAKE_CXX_FLAGS'] = '-m64'
 
-        cmake.definitions["FREEGLUT_BUILD_DEMOS"] = "ON" if self.options.demos else "OFF"
+        cmake.definitions["FREEGLUT_BUILD_DEMOS"] = "OFF"
         cmake.definitions["FREEGLUT_BUILD_STATIC_LIBS"] = "OFF" if self.options.shared else "ON"
         cmake.definitions["FREEGLUT_BUILD_SHARED_LIBS"] = "ON" if self.options.shared else "OFF"
         cmake.definitions["FREEGLUT_GLES"] = "ON" if self.options.gles else "OFF"
