@@ -26,17 +26,17 @@ class freeglutConan(ConanFile):
         "replace_glut": [True, False],
         "install_pdb": [True, False]
     }
-    default_options = (
-        "shared=False",
-        "fPIC=True",
-        "gles=False",
-        "print_errors_at_runtime=True",
-        "print_warnings_at_runtime=True",
-        "replace_glut=True",
-        "install_pdb=False"
-    )
-    source_subfolder = "source_subfolder"
-    build_subfolder = "build_subfolder"
+    default_options = {
+        "shared": False,
+        "fPIC": True,
+        "gles": False,
+        "print_errors_at_runtime": True,
+        "print_warnings_at_runtime": True,
+        "replace_glut": True,
+        "install_pdb": False
+    }
+    _source_subfolder = "_source_subfolder"
+    _build_subfolder = "_build_subfolder"
 
     def config_options(self):
         if self.settings.os == "Windows":
@@ -49,17 +49,17 @@ class freeglutConan(ConanFile):
         archive_url = "https://github.com/dcnieho/FreeGLUT/archive/FG_{}.tar.gz".format(self.version.replace(".", "_"))
         tools.get(archive_url, sha256="b0abf188cfbb572b9f9ef5c6adbeba8eedbd9a717897908ee9840018ab0b8eee")
         extracted_dir = "FreeGLUT-FG_" + self.version.replace(".", "_")
-        os.rename(extracted_dir, self.source_subfolder)
+        os.rename(extracted_dir, self._source_subfolder)
 
         # Remove with > 3.0.0; https://github.com/dcnieho/FreeGLUT/issues/34
         # Windows build fails to install with FREEGLUT_BUILD_STATIC_LIBS and INSTALL_PDB enabled
-        tools.patch(base_path=self.source_subfolder, patch_file="0001-removed-invalid-pdb-install.patch")
+        tools.patch(base_path=self._source_subfolder, patch_file="0001-removed-invalid-pdb-install.patch")
 
         # on macOS GLX can't be found https://github.com/dcnieho/FreeGLUT/issues/27
-        tools.patch(base_path=self.source_subfolder, patch_file="0002-macOS-Fix-GLX-not-found.patch")
+        tools.patch(base_path=self._source_subfolder, patch_file="0002-macOS-Fix-GLX-not-found.patch")
 
         # when build static the default lib name is freeglut_static what causes all kind of trouble to find/include this lib later
-        tools.patch(base_path=self.source_subfolder, patch_file="0003-name-the-library-always-freeglut-not-static.patch")
+        tools.patch(base_path=self._source_subfolder, patch_file="0003-name-the-library-always-freeglut-not-static.patch")
 
     def system_requirements(self):
         if self.settings.os == "Macos":
@@ -94,7 +94,7 @@ class freeglutConan(ConanFile):
             for package in packages:
                 installer.install(package)
 
-    def configure_env(self):
+    def _configure_env(self):
         env = dict()
         if self.settings.os == 'Linux':
             if self.settings.arch == 'x86':
@@ -103,11 +103,11 @@ class freeglutConan(ConanFile):
 
         return env
 
-    def configure_cmake(self):
+    def _configure_cmake(self):
         # See https://github.com/dcnieho/FreeGLUT/blob/44cf4b5b85cf6037349c1c8740b2531d7278207d/README.cmake
         cmake = CMake(self)
 
-        env = self.configure_env()
+        env = self._configure_env()
 
         if self.settings.os == 'Linux':
             if self.settings.arch == 'x86':
@@ -127,19 +127,19 @@ class freeglutConan(ConanFile):
         # cmake.definitions["FREEGLUT_WAYLAND"] = "ON" if self.options.wayland else "OFF" # nightly version only as of now
 
         with tools.environment_append(env):
-            cmake.configure(build_folder=self.build_subfolder)
+            cmake.configure(build_folder=self._build_subfolder)
         return cmake
 
     def build(self):
-        cmake = self.configure_cmake()
-        env = self.configure_env()
+        cmake = self._configure_cmake()
+        env = self._configure_env()
         with tools.environment_append(env):
             cmake.build()
 
     def package(self):
-        self.copy(pattern="COPYING", dst=".", src=self.source_subfolder)
-        cmake = self.configure_cmake()
-        env = self.configure_env()
+        self.copy(pattern="COPYING", dst=".", src=self._source_subfolder)
+        cmake = self._configure_cmake()
+        env = self._configure_env()
         with tools.environment_append(env):
             cmake.install()
 
