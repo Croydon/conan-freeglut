@@ -46,7 +46,7 @@ class freeglutConan(ConanFile):
             self.options.install_pdb = False
 
     def source(self):
-        archive_url = "https://github.com/dcnieho/FreeGLUT/archive/FG_{}.tar.gz".format(self.version.replace(".", "_"))
+        archive_url = "{}/archive/FG_{}.tar.gz".format(self.homepage, self.version.replace(".", "_"))
         tools.get(archive_url, sha256="b0abf188cfbb572b9f9ef5c6adbeba8eedbd9a717897908ee9840018ab0b8eee")
         extracted_dir = "FreeGLUT-FG_" + self.version.replace(".", "_")
         os.rename(extracted_dir, self._source_subfolder)
@@ -94,20 +94,9 @@ class freeglutConan(ConanFile):
             for package in packages:
                 installer.install(package)
 
-    def _configure_env(self):
-        env = dict()
-        if self.settings.os == 'Linux':
-            if self.settings.arch == 'x86':
-                if tools.detected_architecture() == "x86_64":
-                    env['PKG_CONFIG_PATH'] = '/usr/lib/i386-linux-gnu/pkgconfig'
-
-        return env
-
     def _configure_cmake(self):
         # See https://github.com/dcnieho/FreeGLUT/blob/44cf4b5b85cf6037349c1c8740b2531d7278207d/README.cmake
         cmake = CMake(self, set_cmake_flags=True)
-
-        env = self._configure_env()
 
         cmake.definitions["FREEGLUT_BUILD_DEMOS"] = "OFF"
         cmake.definitions["FREEGLUT_BUILD_STATIC_LIBS"] = "OFF" if self.options.shared else "ON"
@@ -118,22 +107,17 @@ class freeglutConan(ConanFile):
         cmake.definitions["FREEGLUT_INSTALL_PDB"] = "ON" if self.options.install_pdb else "OFF"
         # cmake.definitions["FREEGLUT_WAYLAND"] = "ON" if self.options.wayland else "OFF" # nightly version only as of now
 
-        with tools.environment_append(env):
-            cmake.configure(build_folder=self._build_subfolder)
+        cmake.configure(build_folder=self._build_subfolder)
         return cmake
 
     def build(self):
         cmake = self._configure_cmake()
-        env = self._configure_env()
-        with tools.environment_append(env):
-            cmake.build()
+        cmake.build()
 
     def package(self):
         self.copy(pattern="COPYING", dst=".", src=self._source_subfolder)
         cmake = self._configure_cmake()
-        env = self._configure_env()
-        with tools.environment_append(env):
-            cmake.install()
+        cmake.install()
 
     def package_info(self):
         self.cpp_info.libdirs = ["lib", "lib64"]
