@@ -105,17 +105,9 @@ class freeglutConan(ConanFile):
 
     def _configure_cmake(self):
         # See https://github.com/dcnieho/FreeGLUT/blob/44cf4b5b85cf6037349c1c8740b2531d7278207d/README.cmake
-        cmake = CMake(self)
+        cmake = CMake(self, set_cmake_flags=True)
 
         env = self._configure_env()
-
-        if self.settings.os == 'Linux':
-            if self.settings.arch == 'x86':
-                cmake.definitions['CMAKE_C_FLAGS'] = '-m32'
-                cmake.definitions['CMAKE_CXX_FLAGS'] = '-m32'
-            elif self.settings.arch == 'x86_64':
-                cmake.definitions['CMAKE_C_FLAGS'] = '-m64'
-                cmake.definitions['CMAKE_CXX_FLAGS'] = '-m64'
 
         cmake.definitions["FREEGLUT_BUILD_DEMOS"] = "OFF"
         cmake.definitions["FREEGLUT_BUILD_STATIC_LIBS"] = "OFF" if self.options.shared else "ON"
