@@ -149,25 +149,29 @@ class freeglutConan(ConanFile):
         self.cpp_info.libs = []
 
         if self.settings.os == "Windows":
-            if self.settings.compiler == "Visual Studio":
+            if self.settings.os == "Windows":
                 if not self.options.shared:
-                    self.cpp_info.libs.append("opengl32.lib")
-                    self.cpp_info.libs.append("GLu32.lib")
-            else:
+                    self.cpp_info.defines.append("FREEGLUT_STATIC=1")
+                self.cpp_info.defines.append("FREEGLUT_LIB_PRAGMAS=0")
+                self.cpp_info.libs.append("glu32")
                 self.cpp_info.libs.append("opengl32")
+                self.cpp_info.libs.append("gdi32")
+                self.cpp_info.libs.append("winmm")
+                self.cpp_info.libs.append("user32")
 
         if self.settings.os == "Macos":
             self.cpp_info.exelinkflags.append("-framework OpenGL")
 
         if self.settings.os == "Linux":
             if not self.options.shared:
-                self.cpp_info.libs.append("Xxf86vm")
-                self.cpp_info.libs.append("Xext")
-                self.cpp_info.libs.append("X11")
-                self.cpp_info.libs.append("Xrandr")
-                self.cpp_info.libs.append("Xi")
-                self.cpp_info.libs.append("GL")
                 self.cpp_info.libs.append("GLU")
+                self.cpp_info.libs.append("GL")
+                self.cpp_info.libs.append("Xi")
+                self.cpp_info.libs.append("Xrandr")
+                self.cpp_info.libs.append("Xext")
+                self.cpp_info.libs.append("Xxf86vm")
+                self.cpp_info.libs.append("X11")
+
 
         if self.options.replace_glut:
             if self.options.shared:
